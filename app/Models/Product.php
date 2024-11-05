@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Product extends Model
 {
@@ -13,7 +14,7 @@ class Product extends Model
     protected $table = "products"; // Optional, only if your table name is not 'products'
 
     // Specify the fillable attributes
-    protected $fillable = ["name", "description", "price", "stock"];
+    protected $fillable = ["name", "description", "price", "stock","status","status_updated_at"];
 
     // Define any relationships, for example, if a product belongs to a category
     public function category()
@@ -26,6 +27,25 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    // If a product has many reviews
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     // You may include other methods and scopes as needed
+
+    public function getCreatedAtAttribute()
+    {
+        return Carbon::parse($this->attributes['created_at'])->format('Y-m-d H:i:s');
+
+    } 
+
+    public function getStatusUpdatedAtAttribute()
+    {
+        return ($this->attributes['status_updated_at'] != NULL) ? Carbon::parse($this->attributes['status_updated_at'])->format('Y-m-d H:i:s') : '' ;
+
+    } 
+
+    
 }
