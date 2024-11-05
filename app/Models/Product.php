@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -12,8 +13,22 @@ class Product extends Model
     // Define the table associated with the model if it's not the plural form of the model name
     protected $table = "products"; // Optional, only if your table name is not 'products'
 
+
     // Specify the fillable attributes
-    protected $fillable = ["name", "description", "price", "stock"];
+    protected $fillable = [
+        "name",
+        "description",
+        "price",
+        "stock",
+        "status",
+        "status_updated_at", // Add status_updated_at to the fillable array
+    ];
+
+
+    // Automatically cast 'status_updated_at' to a Carbon instance (datetime)
+    protected $casts = [
+        'status_updated_at' => 'datetime',
+    ];
 
     // Define any relationships, for example, if a product belongs to a category
     public function category()
@@ -25,6 +40,12 @@ class Product extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    // Define the relationship with the Review model
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     // You may include other methods and scopes as needed
