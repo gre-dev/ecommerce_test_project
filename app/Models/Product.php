@@ -75,6 +75,3 @@ class Product extends Model
         'status_updated_at' => 'datetime'
     ];
 }
-
-    }
-}
