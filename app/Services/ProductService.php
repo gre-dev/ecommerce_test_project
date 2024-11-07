@@ -17,8 +17,9 @@ class ProductService implements ProductServiceInterface
     public function updateStatus(int $productId, string $status): bool
     {
         $product = $this->model->findOrFail($productId);
+        $product->status = $status;
         $product->status_updated_at = now();
-        return $product->updateStatus($status);
+        return $product->save();
     }
 
     public function getProduct($id)
